@@ -1,6 +1,9 @@
 #![feature(lang_items)]
 #![no_std]
 
+// Implement libc in rust.
+extern crate rlibc;
+
 #[no_mangle]
 pub extern fn rust_main() {}
 
