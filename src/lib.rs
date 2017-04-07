@@ -1,22 +1,29 @@
 #![feature(lang_items)]
+#![feature(unique)]
+#![feature(const_fn)]
 #![no_std]
 
 // Implement libc in rust.
 extern crate rlibc;
+mod vga_buffer;
+
+fn print_something() {
+  use vga_buffer::Writer;
+  use vga_buffer::ColorCode;
+  use vga_buffer::Color;
+  use core::ptr::Unique;
+
+  let mut writer = Writer::new(
+    unsafe { Unique::new(0xb8000 as *mut _) }
+  );
+
+  writer.write_byte(b'H');
+}
 
 #[no_mangle]
 pub extern fn rust_main() {
   // NOTE: We have a very small stack and no guard page.
-  let hello = b"Hello World!";
-  let color_byte: u8 = 0x1f;
-
-  let mut hello_colored = [color_byte; 12*2];
-  for (i, char_byte) in hello.into_iter().enumerate() {
-    hello_colored[i*2] = *char_byte;
-  }
-
-  let vga_buffer = (0xb8000) as *mut _;
-  unsafe { *vga_buffer = hello_colored };
+  print_something();
 
   loop {}
 }
