@@ -36,7 +36,7 @@ $(iso): $(kernel) $(grub_cfg)
 	rm -r build/isofiles
 
 $(kernel): cargo $(assembly_object_files) $(linker_script)
-	ld --nmagic --script $(linker_script) --output $(kernel) $(assembly_object_files) $(rust_os)
+	ld --nmagic --gc-sections --script $(linker_script) --output $(kernel) $(assembly_object_files) $(rust_os)
 
 cargo:
 	cargo build --target $(target)
