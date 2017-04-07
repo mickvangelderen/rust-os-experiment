@@ -1,0 +1,9 @@
+* Issues
+** TODO Investigate if mov is necessary
+[[file:src/arch/x86_64/boot.asm::;%20TODO:%20Is%20it%20really%20necessary%20to%20load%20p4_table%20into%20eax%20before]]
+
+* Dependencies
+
+-  [[http://www.qemu-project.org/][QEMU]] =sudo apt install qemu=
+-  =sudo apt install grub-pc-bin=
+-  =sudo apt install xorriso=
