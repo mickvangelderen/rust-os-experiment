@@ -1,7 +1,7 @@
 global start
 
-  section .text
-  bits 32
+section .text
+bits 32
 start:
   ; initialize stack pointer
   mov esp, stack_top
@@ -159,8 +159,8 @@ enable_paging:
 
   ret
 
-  section .bss
-  align 4096
+section .bss
+align 4096
 p4_table:
   resb 4096
 p3_table:
