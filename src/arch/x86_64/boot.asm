@@ -1,4 +1,5 @@
 global start
+extern long_mode_start
 
 section .text
 bits 32
@@ -12,6 +13,11 @@ start:
 
   call set_up_page_tables
   call enable_paging
+
+  ; Load the 64-bit Global Descriptor Table.
+  lgdt [gdt64.pointer]
+
+  jmp gdt64.code:long_mode_start
 
   ; print "OK" to screen
   mov dword [0xb8000], 0x2f4b2f4f
@@ -170,3 +176,15 @@ p2_table:
 stack_bottom:
   resb 64
 stack_top:
+
+section .rodata
+gdt64:
+  ; Must start with a zero entry.
+  dq 0
+.code: equ $ - gdt64
+  ; Set the 64 bit, present, descriptor type is code or data, and
+  ; executable flags.
+  dq (1 << 53) | (1 << 47) | (1 << 44) | (1 << 43)
+.pointer:
+  dw $ - gdt64 - 1
+  dq gdt64
